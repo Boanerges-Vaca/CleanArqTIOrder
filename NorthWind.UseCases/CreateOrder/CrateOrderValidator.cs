@@ -11,16 +11,16 @@ namespace NorthWind.UseCases.CreateOrder
     {
         public CreateOrderValidator()
         {
-            RuleFor(c => c.CustomerId).NotEmpty()
+            RuleFor(c => c.ResquestData.CustomerId).NotEmpty()
                 .WithMessage("Debe proporcionar el identificador del cliente");
-            RuleFor(c => c.ShipAdress).NotEmpty()
+            RuleFor(c => c.ResquestData.ShipAdress).NotEmpty()
                 .WithMessage("Debe proporcionar la direccion de envío.");
-            RuleFor(c => c.ShipCity).NotEmpty().MinimumLength(3)
+            RuleFor(c => c.ResquestData.ShipCity).NotEmpty().MinimumLength(3)
                 .WithMessage(
                 "Debe proporcional al menos 3 caracteres del nombre de la ciudad");
-            RuleFor(c => c.ShipCountry).NotEmpty().MinimumLength(3)
+            RuleFor(c => c.ResquestData.ShipCountry).NotEmpty().MinimumLength(3)
                 .WithMessage("Debe proporcionar al menos 3 caracteres del nombre del pais.");
-            RuleFor(c => c.OrderDetails)
+            RuleFor(c => c.ResquestData.OrderDetails)
                 .Must(d => d != null && d.Any())
                 .WithMessage("Debe especificarse los productos de la orden");
         }

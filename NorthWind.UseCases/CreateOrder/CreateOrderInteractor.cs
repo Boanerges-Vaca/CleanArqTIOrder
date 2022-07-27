@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NorthWind.UseCases.CreateOrder
 {
-    public class CreateOrderInteractor : IRequestHandler<CreateOrderInputPort, int>
+    public class CreateOrderInteractor : AsyncRequestHandler<CreateOrderInputPort>
     {
         readonly IOrderRepository orderRepository;
         readonly IOrderDetailRepository orderDetailRepository;
@@ -23,22 +23,22 @@ namespace NorthWind.UseCases.CreateOrder
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CreateOrderInputPort request, CancellationToken cancellationToken)
+        protected async override Task Handle(CreateOrderInputPort request, CancellationToken cancellationToken)
         {
             Order order = new Order
             {
-                CustomerId = request.CustomerId,
+                CustomerId = request.ResquestData.CustomerId,
                 OrderDate = DateTime.Now,
-                ShipAddress = request.ShipAdress,
-                ShipCity = request.ShipCountry,
-                ShipCountry = request.ShipCountry,
-                ShipPostalCode = request.ShipPostalCode,
+                ShipAddress = request.ResquestData.ShipAdress,
+                ShipCity = request.ResquestData.ShipCountry,
+                ShipCountry = request.ResquestData.ShipCountry,
+                ShipPostalCode = request.ResquestData.ShipPostalCode,
                 ShippingType = Entities.Enums.ShippingType.Road,
                 DiscountType = Entities.Enums.DiscountType.Percentage,
                 Discount = 10
             };
             orderRepository.Create(order);
-            foreach(var item in request.OrderDetails)
+            foreach(var item in request.ResquestData.OrderDetails)
             {
                 orderDetailRepository.Create(
                     new OrderDetail
@@ -57,7 +57,7 @@ namespace NorthWind.UseCases.CreateOrder
             {
                 throw new GeneralException("Error al crear la orden.", ex.Message);
             }
-            return order.Id;
+            request.OutputPort.Handle(order.Id);
         }
     }
 }

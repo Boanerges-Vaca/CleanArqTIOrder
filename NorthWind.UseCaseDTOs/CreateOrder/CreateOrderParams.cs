@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NorthWind.UseCaseDTOs.CreateOrder
 {
-    public class CrateOrderParams
+    public class CreateOrderParams
     {
         public string CustomerId { get; set; }
 
