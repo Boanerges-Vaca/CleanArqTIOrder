@@ -1,26 +1,27 @@
 ﻿using FluentValidation;
+using NorthWind.UseCaseDTOs.CreateOrder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NorthWind.UseCases.CreateOrder
+namespace NorthWind.UseCases.Common.Validators
 {
-    public class CreateOrderValidator: AbstractValidator<CreateOrderInputPort>
+    public class CreateOrderValidator : AbstractValidator<CreateOrderParams>
     {
         public CreateOrderValidator()
         {
-            RuleFor(c => c.ResquestData.CustomerId).NotEmpty()
+            RuleFor(c => c.CustomerId).NotEmpty()
                 .WithMessage("Debe proporcionar el identificador del cliente");
-            RuleFor(c => c.ResquestData.ShipAdress).NotEmpty()
+            RuleFor(c => c.ShipAdress).NotEmpty()
                 .WithMessage("Debe proporcionar la direccion de envío.");
-            RuleFor(c => c.ResquestData.ShipCity).NotEmpty().MinimumLength(3)
+            RuleFor(c => c.ShipCity).NotEmpty().MinimumLength(3)
                 .WithMessage(
                 "Debe proporcional al menos 3 caracteres del nombre de la ciudad");
-            RuleFor(c => c.ResquestData.ShipCountry).NotEmpty().MinimumLength(3)
+            RuleFor(c => c.ShipCountry).NotEmpty().MinimumLength(3)
                 .WithMessage("Debe proporcionar al menos 3 caracteres del nombre del pais.");
-            RuleFor(c => c.ResquestData.OrderDetails)
+            RuleFor(c => c.OrderDetails)
                 .Must(d => d != null && d.Any())
                 .WithMessage("Debe especificarse los productos de la orden");
         }

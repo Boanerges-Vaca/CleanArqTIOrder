@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NorthWind.Presenters
+namespace NorthWind.UseCasePorts.CreateOrder
 {
-    public interface IPresenter<FormatDataType>
+    public interface ICreateOrderOutputPort
     {
-        public FormatDataType Content { get; }
-
+        Task Handle(int orderId);
     }
 }
